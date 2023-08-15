@@ -7,7 +7,7 @@ const {
   addNewShow,
   updateShow,
   deleteShow,
-} = require("../queries/showList");
+} = require("../queries/animeList");
 
 router.get("/", async (req, res) => {
   try {
@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const createNewShow = addNewShow(req.body);
+    const createNewShow = await addNewShow(req.body);
     res.json(createNewShow);
   } catch (error) {
     res.status(error.status).json({ error: error.message });

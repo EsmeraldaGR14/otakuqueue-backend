@@ -3,7 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const app = express();
-const showListController = require("./controllers/showListController");
+const showListController = require("./controllers/animeListController");
 
 app.use(cors());
 app.use(express.json());
