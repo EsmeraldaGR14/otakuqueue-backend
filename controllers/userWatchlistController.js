@@ -7,11 +7,11 @@ const {
   createNewUserWatchlist,
   updateUserWatchlist,
   deleteUserWatchlist,
+  allUserWatchlistOnUserbyId,
 } = require("../queries/userWatchlist");
 
 router.get("/", async (req, res) => {
   try {
-    console.log(req.params);
     const getAllUserWatchlist = await allUserWatchlist(req.params.userId);
     res.json(getAllUserWatchlist);
   } catch (error) {
@@ -19,9 +19,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:watchlistId", async (req, res) => {
   try {
-    const getSingleUserWatchlist = await singleUserWatchlist(req.params.id);
+    // res.json(req.params);
+    const getSingleUserWatchlist = await singleUserWatchlist(
+      req.params.userId,
+      req.params.watchlistId
+    );
     res.json(getSingleUserWatchlist);
   } catch (error) {
     res.status(error.status).json({ error: error.message });
@@ -30,7 +34,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const createdNewUserWatchlist = createNewUserWatchlist(
+    const createdNewUserWatchlist = await createNewUserWatchlist(
       req.params.id,
       req.body
     );
@@ -58,4 +62,12 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.get("/get-all-watchlist/:userId", async (req, res) => {
+  try {
+    const details = await allUserWatchlistOnUserbyId(req.params.userId);
+    res.json(details);
+  } catch (error) {
+    res.status(error.status).json({ error: error.message });
+  }
+});
 module.exports = router;
