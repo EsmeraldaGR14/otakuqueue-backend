@@ -14,18 +14,20 @@ CREATE TABLE anime_list (
     rating DECIMAL(3, 1)
 );
 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL
+);
+
 -- the purpose of this table is so that the user is able to store the animes they have selected
 CREATE TABLE user_watchlist (
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
-    anime_id INT REFERENCES anime_list(id),
-    status ENUM ('watching', 'want_to_watch', 'watched'), -- Define ENUM directly
-    current_episode INT
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    anime_id INT REFERENCES anime_list(id) ON DELETE CASCADE,
+    status VARCHAR(20) CHECK (status IN ('watching', 'want_to_watch', 'watched')),
+    current_episode INT,
+    is_favorite BOOLEAN
 );
 
 -- the purpose of this table is so that there are users, this allows for a more personlised website
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE,
-    user_watchlist_id INT REFERENCES user_watchlist(id)
-);
+
