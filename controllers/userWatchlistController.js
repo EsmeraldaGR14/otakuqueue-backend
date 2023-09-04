@@ -21,7 +21,6 @@ router.get("/", async (req, res) => {
 
 router.get("/:watchlistId", async (req, res) => {
   try {
-    // res.json(req.params);
     const getSingleUserWatchlist = await singleUserWatchlist(
       req.params.userId,
       req.params.watchlistId
@@ -34,8 +33,9 @@ router.get("/:watchlistId", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    console.log(req.params);
     const createdNewUserWatchlist = await createNewUserWatchlist(
-      req.params.id,
+      req.params.userId,
       req.body
     );
     res.json(createdNewUserWatchlist);

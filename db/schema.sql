@@ -11,12 +11,12 @@ CREATE TABLE anime_list (
     title VARCHAR(300) NOT NULL,
     description TEXT,
     genre VARCHAR(50),
-    release_date DATE,
+    release_date TEXT,
     rating DECIMAL(3, 1)
 );
 
 DROP TABLE IF EXISTS users;
--- the purpose of this table is so that there are users, this allows for a more personlised website
+-- the purpose of this table is so that there are users, this allows for a more personalized website
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL
@@ -32,5 +32,7 @@ CREATE TABLE user_watchlist (
     current_episode INT,
     is_favorite BOOLEAN
 );
+
+
 
 

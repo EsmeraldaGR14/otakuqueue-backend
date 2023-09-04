@@ -9,6 +9,19 @@ const allUsers = async () => {
   }
 };
 
+const getUserByUsername = async (username) => {
+  try {
+    const user = await db.oneOrNone("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+    console.log(user);
+    return user;
+  } catch (error) {
+    console.error("getUserByUsername error:", error);
+    return null;
+  }
+};
+
 const singleUser = async (id) => {
   try {
     const getSingleUser = await db.one("SELECT * FROM users WHERE id = $1", id);
@@ -59,4 +72,5 @@ module.exports = {
   createNewUser,
   updateUser,
   deleteUser,
+  getUserByUsername,
 };

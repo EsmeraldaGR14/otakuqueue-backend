@@ -9,7 +9,7 @@ const allUserWatchlist = async (userId) => {
     );
     return getAllUserWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -23,18 +23,36 @@ const singleUserWatchlist = async (userId, userWatchlistId) => {
     );
     return getSingleUserWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
-const createNewUserWatchlist = async (data) => {
+
+const singleUserWatchlistItem = async (userWatchlistId, data) => {
+  try {
+    console.log(userWatchlistId, data);
+    const getWatchlistItem = db.any(
+      "SELECT * user_watchlist WHERE id = $1 AND "
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+const createNewUserWatchlist = async (userId, data) => {
   try {
     const createdNewUserWatchlist = await db.any(
-      "INSERT INTO user_watchlist (user_id, anime_id, status, current_episode, is_favorite) VALUES ($1, $2, $3, $4, $5) RETRUNGING *",
-      [data.status, data.current_episode, data.is_favorite]
+      "INSERT INTO user_watchlist (user_id, anime_id, status, current_episode, is_favorite) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [
+        userId,
+        data.anime_id,
+        data.status,
+        data.current_episode,
+        data.is_favorite,
+      ]
     );
     return createdNewUserWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 const updateUserWatchlist = async (id, data) => {
@@ -52,7 +70,7 @@ const updateUserWatchlist = async (id, data) => {
     );
     return updatedUserWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 const deleteUserWatchlist = async (id) => {
@@ -63,7 +81,7 @@ const deleteUserWatchlist = async (id) => {
     );
     return deletedUserWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -75,7 +93,7 @@ const allUserWatchlistOnUserbyId = async (userId) => {
     );
     return userDetailsWithWatchlist;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 

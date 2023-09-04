@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET;
+// const verifyToken = require("../validations/verifyToken");
 
 const userWatchlistController = require("./userWatchlistController");
 
@@ -11,6 +14,7 @@ const {
   createNewUser,
   updateUser,
   deleteUser,
+  getUserByUsername,
 } = require("../queries/users");
 
 router.get("/", async (req, res) => {
@@ -22,9 +26,39 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.post("/login", async (req, res) => {
+  // console.log("username:", username);
+  // res.json("hello");
+
   try {
-    const getSingleUser = await singleUser(req.params.id);
+    const { username } = req.body;
+    console.log(username);
+
+    const user = await getUserByUsername(username);
+    // console.log("user", user);
+
+    if (!user) {
+      console.log("user is invalid");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // console.log("User found:", user);
+
+    const token = jwt.sign({ userId: user.id }, secret, {
+      expiresIn: "1d",
+    });
+
+    console.log("Token generated:", token);
+
+    res.json({ token });
+  } catch (error) {
+    res.status(error.status).json({ error: error.message });
+  }
+});
+
+router.get("/:username", async (req, res) => {
+  try {
+    const getSingleUser = await getUserByUsername(req.params.username);
     res.json(getSingleUser);
   } catch (error) {
     res.status(error.status).json({ error: error.message });

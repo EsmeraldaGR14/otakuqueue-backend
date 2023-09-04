@@ -38,7 +38,9 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    console.log(req.params.id, req.body);
     const updatedShow = await updateShow(req.params.id, req.body);
+    console.log(updatedShow);
     res.json(updatedShow);
   } catch (error) {
     res.status(error.status).json({ error: error.message });
